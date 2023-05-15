@@ -1,4 +1,5 @@
 import 'package:fundflow/pages/HomeScreen.dart';
+import 'package:fundflow/pages/LoginScreen.dart';
 import 'package:fundflow/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +17,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'FundFlow',
       theme: ThemeData(
-        primaryColor: primary,
+        primaryColor: Color.fromRGBO(54, 137, 131, 1),
+        appBarTheme: AppBarTheme(color: Color.fromRGBO(54, 137, 131, 1)),
       ),
-      home: const AppHomeScreen(),
+      home: AppLoginScreen(),
     );
   }
 }
