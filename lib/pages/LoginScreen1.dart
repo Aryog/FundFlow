@@ -37,142 +37,143 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
         padding: EdgeInsets.all(AppLayout.getHeight(12)),
         children: [
           Form(
-              key: _formkey,
-              child: Column(
-                children: [
-                  Gap(AppLayout.getHeight(40)),
-                  Container(
-                    child: SvgPicture.asset(
-                      'assets/images/fundflowlogo.svg',
-                      width: 250, // Set the desired width
-                      height: 250, // Set the desired height
-                    ),
+            key: _formkey,
+            child: Column(
+              children: [
+                Gap(AppLayout.getHeight(40)),
+                Container(
+                  child: SvgPicture.asset(
+                    'assets/images/fundflowlogo.svg',
+                    width: 250, // Set the desired width
+                    height: 250, // Set the desired height
                   ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your Username";
-                      }
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your Username";
+                    }
+                    return null;
+                  },
+                  onSaved: (newValue) => _username = newValue!,
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        FluentSystemIcons.ic_fluent_person_filled,
+                        color: Styles.primaryColor,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Styles.primaryColor)),
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppLayout.getHeight(12)),
+                      ),
+                      labelText: "Username"),
+                ),
+                Gap(AppLayout.getHeight(10)),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your Password";
+                    } else {
                       return null;
-                    },
-                    onSaved: (newValue) => _username = newValue!,
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          FluentSystemIcons.ic_fluent_person_filled,
-                          color: Styles.primaryColor,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Styles.primaryColor)),
-                        border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppLayout.getHeight(12)),
-                        ),
-                        labelText: "Username"),
-                  ),
-                  Gap(AppLayout.getHeight(10)),
-                  TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your Password";
-                      } else {
-                        return null;
-                      }
-                    },
-                    obscureText: isVisible,
-                    onSaved: ((newValue) => _password = newValue!),
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          FluentSystemIcons.ic_fluent_lock_filled,
-                          color: Styles.primaryColor,
-                        ),
-                        suffixIcon: GestureDetector(
-                          child: Icon(isVisible
-                              ? FluentSystemIcons.ic_fluent_eye_hide_filled
-                              : FluentSystemIcons.ic_fluent_eye_show_filled),
-                          onTap: () {
-                            setState(() {
-                              isVisible = !isVisible;
-                            });
-                          },
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Styles.primaryColor)),
-                        border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppLayout.getHeight(12)),
-                        ),
-                        labelText: "Password",
-                        labelStyle: Styles.headLineStyle3
-                            .copyWith(fontWeight: FontWeight.normal)),
-                  ),
-                  Gap(AppLayout.getHeight(15)),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //checkbox
-                        Flex(direction: Axis.horizontal, children: [
-                          Checkbox(
-                              value: isChecked,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4)),
-                              onChanged: (e) => {
-                                    setState(() {
-                                      isChecked = !isChecked;
-                                    })
-                                  }),
-                          Text(
-                            "Remember Me",
-                            style: Styles.headLineStyle3
-                                .copyWith(fontWeight: FontWeight.normal),
-                          )
-                        ]),
-
-                        //forget password
-                        InkWell(
-                          onTap: () {},
-                          child: Text(
-                            "Forgot Password?",
-                            style: TextStyle(color: Styles.primaryColor),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Gap(AppLayout.getHeight(15)),
-                  Container(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () => _submitForm(),
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Styles.primaryColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    AppLayout.getHeight(8))),
-                            padding: EdgeInsets.all(AppLayout.getHeight(12))),
-                        child: Text(
-                          "Login",
-                          style: Styles.headLineStyle2.copyWith(
-                              fontWeight: FontWeight.w600, color: Colors.white),
-                        )),
-                  ),
-                  Gap(AppLayout.getHeight(12)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    }
+                  },
+                  obscureText: isVisible,
+                  onSaved: ((newValue) => _password = newValue!),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        FluentSystemIcons.ic_fluent_lock_filled,
+                        color: Styles.primaryColor,
+                      ),
+                      suffixIcon: GestureDetector(
+                        child: Icon(isVisible
+                            ? FluentSystemIcons.ic_fluent_eye_hide_filled
+                            : FluentSystemIcons.ic_fluent_eye_show_filled),
+                        onTap: () {
+                          setState(() {
+                            isVisible = !isVisible;
+                          });
+                        },
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Styles.primaryColor)),
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppLayout.getHeight(12)),
+                      ),
+                      labelText: "Password",
+                      labelStyle: Styles.headLineStyle3
+                          .copyWith(fontWeight: FontWeight.normal)),
+                ),
+                Gap(AppLayout.getHeight(15)),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Don't have an account?"),
+                      //checkbox
+                      Flex(direction: Axis.horizontal, children: [
+                        Checkbox(
+                            value: isChecked,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4)),
+                            onChanged: (e) => {
+                                  setState(() {
+                                    isChecked = !isChecked;
+                                  })
+                                }),
+                        Text(
+                          "Remember Me",
+                          style: Styles.headLineStyle3
+                              .copyWith(fontWeight: FontWeight.normal),
+                        )
+                      ]),
+
+                      //forget password
                       InkWell(
                         onTap: () {},
                         child: Text(
-                          " Register Here!",
-                          style: Styles.headLineStyle3.copyWith(
-                              color: Styles.primaryColor, fontSize: 12),
+                          "Forgot Password?",
+                          style: TextStyle(color: Styles.primaryColor),
                         ),
                       )
                     ],
-                  )
-                ],
-              ))
+                  ),
+                ),
+                Gap(AppLayout.getHeight(15)),
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      onPressed: () => _submitForm(),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Styles.primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  AppLayout.getHeight(8))),
+                          padding: EdgeInsets.all(AppLayout.getHeight(12))),
+                      child: Text(
+                        "Login",
+                        style: Styles.headLineStyle2.copyWith(
+                            fontWeight: FontWeight.w600, color: Colors.white),
+                      )),
+                ),
+                Gap(AppLayout.getHeight(12)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Don't have an account?"),
+                    InkWell(
+                      onTap: () {},
+                      child: Text(
+                        " Register Here!",
+                        style: Styles.headLineStyle3
+                            .copyWith(color: Styles.primaryColor, fontSize: 12),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
