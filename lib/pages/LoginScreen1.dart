@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:fundflow/utils/app_styles.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 
 class AppLoginScreen extends StatefulWidget {
   const AppLoginScreen({Key? key}) : super(key: key);
@@ -19,12 +22,34 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
   String _username = '';
   String _password = '';
 
-  void _submitForm() {
+  void _submitForm() async {
     print("clicked");
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
       // Perform the save operation using backend
       // To do backend to be in node js user add
+      String url = 'http://10.0.2.2:5000/auth/login';
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+      };
+      Map<String, String> body = {'username': _username, 'password': _password};
+      try {
+        final uri = Uri.parse(url);
+        var response =
+            await http.post(uri, headers: headers, body: jsonEncode(body));
+        if (response.statusCode == 200) {
+          // Successful login
+          var responseData = jsonDecode(response.body);
+          String accessToken = responseData['accessToken'];
+          String refreshToken = responseData['refreshToken'];
+          print('accesstoken is ${accessToken}');
+        } else {
+          // Login failed
+          print('Login failed with status code: ${response.statusCode}');
+        }
+      } catch (e) {
+        print("Error ${e}");
+      }
       print('UserName: $_username');
       print("Password: $_password");
     }
