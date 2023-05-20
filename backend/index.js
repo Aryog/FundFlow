@@ -1,9 +1,11 @@
-const AuthRoute = require('./Routes/AuthRoute')
-const mongoose = require('mongoose')
-const dotenv = require('dotenv')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const express = require('express')
+import express from 'express';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import dotenv from "dotenv";
+import cors from 'cors'
+import AuthRoute from "./Routes/AuthRoute.js"
+
+
 dotenv.config();
 const app = express();
 
