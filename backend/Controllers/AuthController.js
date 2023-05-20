@@ -2,6 +2,8 @@ import UserModel from "../Modals/UserModel.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
+
+// Register request handle function
 export const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
@@ -24,6 +26,7 @@ export const registerUser = async (req, res) => {
     }
 }
 
+// Login request handle function
 export const loginUser = async (req, res) => {
     const { username, password } = req.body;
     try {
