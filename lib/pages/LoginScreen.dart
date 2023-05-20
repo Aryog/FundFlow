@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fundflow/pages/HomeScreen.dart';
+import 'package:fundflow/utils/app_layout.dart';
 import 'package:fundflow/utils/app_styles.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class AppLoginScreen extends StatelessWidget {
@@ -15,8 +17,8 @@ class AppLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Color.fromARGB(255, 76, 175, 80),
-      backgroundColor: Theme.of(context).primaryColor,
+      // backgroundColor: Color.fromARGB(255, 76, 175, 80),
+      backgroundColor: Styles.bgColor,
       //appBar: AppBar(backgroundColor: Styles.bgColor),
       body: Center(
         child: Form(
@@ -30,16 +32,7 @@ class AppLoginScreen extends StatelessWidget {
                 width: 250,
                 fit: BoxFit.fill,
               ),
-              // Text(
-              //   'Welcome',
-              //   style: TextStyle(
-              //       color: Colors.white,
-              //       fontSize: 25,
-              //       fontWeight: FontWeight.w500),
-              // ),
-              SizedBox(
-                height: 20,
-              ),
+              Gap(AppLayout.getHeight(20)),
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -60,10 +53,10 @@ class AppLoginScreen extends StatelessWidget {
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
-                margin: EdgeInsets.all(12),
+                margin: EdgeInsets.all(AppLayout.getHeight(12)),
                 child: TextFormField(
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: UnderlineInputBorder(borderSide: BorderSide.none),
                     icon: Icon(Icons.lock),
                     labelText: 'Password',
