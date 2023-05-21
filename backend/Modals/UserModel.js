@@ -9,12 +9,8 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    firstname: {
-        type: String,
-        required: true
-    },
-    lastname: {
-        type: String,
+    mobile_number: {
+        type: Number,
         required: true
     },
     email: {

@@ -39,6 +39,7 @@ dependencies:
   gap: ^2.0.0
   flutter_svg: ^0.22.0
   http: ^0.13.6
+  intl_phone_field: ^3.1.0
 
 dev_dependencies:
   flutter_test:

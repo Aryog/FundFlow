@@ -1,5 +1,6 @@
 import 'package:fundflow/pages/HomeScreen.dart';
 import 'package:fundflow/pages/LoginScreen1.dart';
+import 'package:fundflow/pages/RegisterScreen.dart';
 import 'package:fundflow/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color.fromRGBO(54, 137, 131, 1),
         appBarTheme: AppBarTheme(color: Color.fromRGBO(54, 137, 131, 1)),
       ),
-      home: AppLoginScreen(),
+      home: AppRegsiterScreen(),
     );
   }
 }
