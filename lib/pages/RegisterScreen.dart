@@ -7,7 +7,6 @@ import 'package:fundflow/utils/app_layout.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 class AppRegsiterScreen extends StatefulWidget {
   const AppRegsiterScreen({super.key});

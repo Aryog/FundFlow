@@ -1,11 +1,17 @@
 import 'package:fundflow/pages/HomeScreen.dart';
 import 'package:fundflow/pages/LoginScreen1.dart';
 import 'package:fundflow/pages/RegisterScreen.dart';
+import 'package:fundflow/pages/LearningProvider.dart';
+import 'package:fundflow/providers/movie_provider.dart';
 import 'package:fundflow/utils/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => MovieProvider(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +27,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color.fromRGBO(54, 137, 131, 1),
         appBarTheme: AppBarTheme(color: Color.fromRGBO(54, 137, 131, 1)),
       ),
-      home: AppRegsiterScreen(),
+      home: AppLearnScreen(),
     );
   }
 }
