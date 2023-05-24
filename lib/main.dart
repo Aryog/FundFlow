@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color.fromRGBO(54, 137, 131, 1),
         appBarTheme: AppBarTheme(color: Color.fromRGBO(54, 137, 131, 1)),
       ),
-      home: AppLearnScreen(),
+      home: AppHomeScreen(),
     );
   }
 }
