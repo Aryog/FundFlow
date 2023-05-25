@@ -6,6 +6,7 @@ import 'package:fundflow/pages/StatisticsScreeen.dart';
 import 'package:fundflow/providers/movie_provider.dart';
 import 'package:fundflow/utils/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:fundflow/widgets/botomNavigationBar.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color.fromRGBO(54, 137, 131, 1),
         appBarTheme: AppBarTheme(color: Color.fromRGBO(54, 137, 131, 1)),
       ),
-      home: AppStatisticsScreen(),
+      home: BottomNavBar(),
     );
   }
 }

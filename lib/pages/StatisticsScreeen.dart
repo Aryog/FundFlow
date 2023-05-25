@@ -1,5 +1,6 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:fundflow/data/listTopData.dart';
 import '../widgets/chart.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:fundflow/utils/app_styles.dart';
@@ -98,9 +99,41 @@ class _AppStatisticsScreenState extends State<AppStatisticsScreen> {
                   ),
                 ),
                 Gap(AppLayout.getHeight(20)),
-                // const MyChartWidget()
+                const MyChartWidget(),
+                Gap(AppLayout.getHeight(10)),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Top Spending",
+                        style: Styles.headLineStyle3
+                            .copyWith(color: Styles.primaryColor),
+                      ),
+                      Icon(Icons.swap_vert, size: 25, color: Colors.grey)
+                    ],
+                  ),
+                )
               ],
             ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              return ListTile(
+                leading: Image.asset(
+                  "assets/images/${getter_top()[index].category}.png",
+                  height: 35,
+                ),
+                title: Text(getter_top()[index].category!,
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                subtitle: Text("Mostly using ${getter_top()[index].account!}",
+                    style: TextStyle(fontWeight: FontWeight.w600)),
+                trailing: Text('\$${getter_top()[index].amount}',
+                    style: Styles.headLineStyle4.copyWith(color: Colors.red)),
+              );
+            }, childCount: getter_top().length),
           )
         ],
       )),

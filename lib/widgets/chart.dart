@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fundflow/utils/app_styles.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MyChartWidget extends StatefulWidget {
-  const MyChartWidget({super.key});
+  const MyChartWidget({Key? key}) : super(key: key);
 
   @override
   State<MyChartWidget> createState() => _MyChartWidgetState();
@@ -18,15 +19,20 @@ class _MyChartWidgetState extends State<MyChartWidget> {
         primaryXAxis: CategoryAxis(),
         series: <SplineSeries<SalesData, String>>[
           SplineSeries<SalesData, String>(
-              dataSource: <SalesData>[
-                SalesData(100, 'mon'),
-                SalesData(20, 'Tue'),
-                SalesData(40, 'Wen'),
-                SalesData(100, 'Sat'),
-                SalesData(10, 'sun'),
-              ],
-              xValueMapper: (SalesData sales, _) => sales.year,
-              yValueMapper: (SalesData sales, _) => sales.sales)
+            color: Styles.primaryColor,
+            width: 3,
+            dataSource: <SalesData>[
+              SalesData(100, 'Mon'),
+              SalesData(20, 'Tue'),
+              SalesData(40, 'Wed'),
+              SalesData(40, 'Thu'),
+              SalesData(20, 'Fri'),
+              SalesData(100, 'Sat'),
+              SalesData(10, 'Sun'),
+            ],
+            xValueMapper: (SalesData sales, _) => sales.year,
+            yValueMapper: (SalesData sales, _) => sales.sales,
+          )
         ],
       ),
     );
