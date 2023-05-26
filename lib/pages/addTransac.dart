@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:fundflow/utils/app_styles.dart';
+import 'package:fundflow/utils/app_utilities.dart';
 import 'package:gap/gap.dart';
 
 class AppAddScreen extends StatefulWidget {
@@ -13,6 +14,7 @@ class AppAddScreen extends StatefulWidget {
 }
 
 class _AppAddScreenState extends State<AppAddScreen> {
+  DateTime date = DateTime.now();
   int activeIndex = 0;
   String? selectedItem;
   String? selectedMethod;
@@ -131,12 +133,38 @@ class _AppAddScreenState extends State<AppAddScreen> {
                 activeIndex == 0
                     ? category(_itemIn, false)
                     : category(_itemEx, false),
-                Gap(AppLayout.getHeight(20)),
+                Gap(AppLayout.getHeight(10)),
                 inputRemarks("Amount", true),
-                Gap(AppLayout.getHeight(20)),
+                Gap(AppLayout.getHeight(10)),
                 category(_method, true),
-                Gap(AppLayout.getHeight(25)),
+                Gap(AppLayout.getHeight(10)),
                 inputRemarks("Remarks", false),
+                Gap(AppLayout.getHeight(20)),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(AppLayout.getHeight(10)),
+                    border: Border.all(width: 2, color: Color(0xffc5c5c5)),
+                  ),
+                  width: AppLayout.getHeight(300),
+                  child: TextButton(
+                    onPressed: () async {
+                      DateTime? newDate = await showDatePicker(
+                          context: context,
+                          initialDate: date,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2050));
+                      if (newDate == Null) return;
+                      setState(() {
+                        date = newDate!;
+                      });
+                    },
+                    child: Text(
+                      "Date: ${Utils.getMonth(date.month)} ${date.day},${date.year}",
+                      style: Styles.headLineStyle4,
+                    ),
+                  ),
+                )
               ]),
             ),
           )
@@ -218,7 +246,7 @@ class _AppAddScreenState extends State<AppAddScreen> {
                   ))
               .toList(),
           hint: Text(
-            'Category',
+            isMethod ? 'Method' : 'Category',
             style: TextStyle(color: Colors.grey),
           ),
           dropdownColor: Colors.white,
