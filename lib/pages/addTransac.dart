@@ -15,8 +15,43 @@ class AppAddScreen extends StatefulWidget {
 class _AppAddScreenState extends State<AppAddScreen> {
   int activeIndex = 0;
   String? selectedItem;
-  final List<String> _item = ['Allowance', 'Salary', 'Cash', 'Bonus', 'Others'];
+  String? selectedMethod;
+  final TextEditingController explain_C = TextEditingController();
+  final TextEditingController amount_C = TextEditingController();
+  FocusNode ex = FocusNode();
+  FocusNode nu = FocusNode();
+  final List<String> _itemIn = [
+    'Allowance',
+    'Salary',
+    'Cash',
+    'Bonus',
+    'Others'
+  ];
+  final List<String> _itemEx = [
+    'Food',
+    'Transport',
+    'Household',
+    'Health',
+    'Education',
+    'Attire',
+    'Others'
+  ];
+  final List<String> _method = [
+    'Card',
+    'Accounts',
+    'Cash',
+  ];
   @override
+  void initState() {
+    super.initState();
+    ex.addListener(() {
+      setState(() {});
+    });
+    nu.addListener(() {
+      setState(() {});
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Styles.bgColor,
@@ -42,6 +77,7 @@ class _AppAddScreenState extends State<AppAddScreen> {
                       onPressed: () {
                         setState(() {
                           activeIndex = 0;
+                          selectedItem = null;
                         });
                       },
                       child: Text(
@@ -66,6 +102,7 @@ class _AppAddScreenState extends State<AppAddScreen> {
                       onPressed: () {
                         setState(() {
                           activeIndex = 1;
+                          selectedItem = null;
                         });
                       },
                       child: Text(
@@ -88,63 +125,116 @@ class _AppAddScreenState extends State<AppAddScreen> {
                     )
                   ],
                 ),
-                Divider(
+                const Divider(
                   thickness: sqrt1_2,
                 ),
-                Padding(
-                  padding: EdgeInsets.all(AppLayout.getHeight(8)),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: AppLayout.getHeight(8)),
-                    width: 300,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(width: 2, color: Color(0xffc5c5c5))),
-                    child: DropdownButton<String>(
-                      items: _item
-                          .map((e) => DropdownMenuItem(
-                                child: Container(
-                                  child: Container(
-                                    child: Row(children: [
-                                      Visibility(
-                                        visible: e != 'Others',
-                                        child: Container(
-                                          width: 35,
-                                          child: Image.asset(
-                                              "assets/images/${e}.png"),
-                                        ),
-                                      ),
-                                      Gap(AppLayout.getHeight(10)),
-                                      Text(
-                                        e,
-                                        style: TextStyle(fontSize: 18),
-                                      )
-                                    ]),
-                                  ),
-                                ),
-                                value: e,
-                              ))
-                          .toList(),
-                      hint: Text(
-                        'Category',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      dropdownColor: Colors.white,
-                      isExpanded: true,
-                      underline: Container(),
-                      onChanged: ((value) {
-                        setState(() {
-                          selectedItem = value!;
-                        });
-                      }),
-                    ),
-                  ),
-                )
+                activeIndex == 0
+                    ? category(_itemIn, false)
+                    : category(_itemEx, false),
+                Gap(AppLayout.getHeight(20)),
+                inputRemarks("Amount", true),
+                Gap(AppLayout.getHeight(20)),
+                category(_method, true),
+                Gap(AppLayout.getHeight(25)),
+                inputRemarks("Remarks", false),
               ]),
             ),
           )
         ],
       )),
+    );
+  }
+
+  Padding inputRemarks(String str, bool isNumber) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+        focusNode: isNumber ? nu : ex,
+        controller: isNumber ? amount_C : explain_C,
+        decoration: InputDecoration(
+          prefixText: isNumber ? "\$  " : "",
+          contentPadding: EdgeInsets.symmetric(
+              horizontal: AppLayout.getHeight(15),
+              vertical: AppLayout.getHeight(15)),
+          labelText: str,
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(width: 2, color: Color(0xffc5c5c5))),
+          labelStyle: TextStyle(fontSize: 17, color: Colors.grey.shade500),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(width: 2, color: Styles.primaryColor)),
+        ),
+      ),
+    );
+  }
+
+  Padding category(List<String> _item, bool isMethod) {
+    return Padding(
+      padding: EdgeInsets.all(AppLayout.getHeight(8)),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: AppLayout.getHeight(8)),
+        width: AppLayout.getHeight(300),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: 2, color: Color(0xffc5c5c5))),
+        child: DropdownButton<String>(
+          value: isMethod ? selectedMethod : selectedItem,
+          items: _item
+              .map((e) => DropdownMenuItem(
+                    child: Container(
+                      child: Container(
+                        child: Row(children: [
+                          Visibility(
+                            visible: e != 'Others',
+                            child: Container(
+                              width: 32,
+                              child: Image.asset("assets/images/${e}.png"),
+                            ),
+                          ),
+                          Gap(AppLayout.getHeight(10)),
+                          Text(
+                            e,
+                            style: TextStyle(fontSize: 18),
+                          )
+                        ]),
+                      ),
+                    ),
+                    value: e,
+                  ))
+              .toList(),
+          selectedItemBuilder: (context) => _item
+              .map((e) => Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(AppLayout.getHeight(5)),
+                        width: 42,
+                        child: Image.asset('assets/images/${e}.png'),
+                      ),
+                      Gap(AppLayout.getHeight(10)),
+                      Text(e)
+                    ],
+                  ))
+              .toList(),
+          hint: Text(
+            'Category',
+            style: TextStyle(color: Colors.grey),
+          ),
+          dropdownColor: Colors.white,
+          isExpanded: true,
+          underline: Container(),
+          onChanged: (value) {
+            setState(() {
+              if (isMethod) {
+                selectedMethod = value!;
+              } else {
+                selectedItem = value!;
+              }
+            });
+          },
+        ),
+      ),
     );
   }
 
