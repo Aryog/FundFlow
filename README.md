@@ -1,10 +1,9 @@
 # fundflow
+  ## App as your pocket seeker. 
 
-A new Flutter project.
+## 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
+This app handles all the Income and Expenses records with clear insights.
 
 A few resources to get you started if this is your first Flutter project:
 

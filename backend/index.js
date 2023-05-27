@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import dotenv from "dotenv";
 import cors from 'cors'
 import AuthRoute from "./Routes/AuthRoute.js"
+import RecordRoute from "./Routes/RecordRoute.js"
 
 
 dotenv.config();
@@ -31,3 +32,6 @@ app.get("/", (req, res) => {
 })
 
 app.use('/auth', AuthRoute);
+
+// To-do add the user details firstly to be implemented without middleware
+app.use('/record', RecordRoute);

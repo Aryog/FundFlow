@@ -49,11 +49,11 @@ export const loginUser = async (req, res) => {
 }
 
 const generateAccessToken = (user) => {
-    return jwt.sign({ user: user.username, user: user._id }, process.env.JWT_ACCESS_SECRET, { expiresIn: '15m' });
+    return jwt.sign({ id: user._id, user: user.username }, process.env.JWT_ACCESS_SECRET, { expiresIn: '15m' });
 };
 
 const generateRefreshToken = (user) => {
-    return jwt.sign({ user: user.username, user: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+    return jwt.sign({ id: user._id, user: user.username }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
 };
 
 // for verification send mail link
@@ -88,6 +88,30 @@ export const verifyUser = async (req, res) => {
     }
 }
 
+export const getAccessToken = async (req, res) => {
+    try {
+        const refreshToken = req.body.refreshToken.split(" ")[0];
+
+        // Verify and decode the refresh token
+        jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
+            if (err) {
+                // Handle refresh token verification error (e.g., token expired, invalid signature)
+                return res.status(401).json({ error: 'Invalid refresh token' });
+            }
+
+            // Extract the necessary information from the refresh token, such as the user ID
+            const userId = decoded.id;
+
+            // Generate a new access token
+            const accessToken = jwt.sign({ id: userId }, process.env.JWT_ACCESS_SECRET, { expiresIn: '15m' });
+
+            // Send the new access token as a response
+            res.status(200).json({ accessToken });
+        });
+    } catch (error) {
+
+    }
+}
 
 async function sendVerifyMail(username, email, _id) {
     // Generate test SMTP service account from ethereal.email
