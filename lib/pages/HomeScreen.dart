@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fundflow/data/listMoneyData.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:fundflow/utils/app_styles.dart';
+import 'package:fundflow/utils/app_utilities.dart';
 import 'package:gap/gap.dart';
 
 class AppHomeScreen extends StatelessWidget {
@@ -31,9 +32,12 @@ class AppHomeScreen extends StatelessWidget {
                         style: Styles.headLineStyle3
                             .copyWith(color: Styles.primaryColor),
                       ),
-                      Text("See all",
-                          style: Styles.headLineStyle3
-                              .copyWith(fontSize: 15, color: Colors.grey))
+                      InkWell(
+                        onTap: () {},
+                        child: Text("See all",
+                            style: Styles.headLineStyle3
+                                .copyWith(fontSize: 15, color: Colors.grey)),
+                      )
                     ]),
               ),
             ),
@@ -52,7 +56,7 @@ class AppHomeScreen extends StatelessWidget {
                 ),
                 subtitle: getter()[index].type == "Income"
                     ? Text(
-                        "On ${getter()[index].account!}",
+                        "On ${getter()[index].account!} (${Utils.getWeekday((getter()[index].date)?.weekday)} ${Utils.getMonth(getter()[index].date?.month)} ${getter()[index].date?.day}, ${getter()[index].date?.year})",
                         style: TextStyle(fontWeight: FontWeight.w600),
                       )
                     : Text(
@@ -130,7 +134,7 @@ class AppHomeScreen extends StatelessWidget {
           ],
         ),
         Positioned(
-          top: AppLayout.getHeight(160),
+          top: AppLayout.getHeight(140),
           left: AppLayout.getWidth(37),
           child: Container(
             height: 170,

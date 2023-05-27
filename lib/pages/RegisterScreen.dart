@@ -102,6 +102,7 @@ class _AppRegsiterScreenState extends State<AppRegsiterScreen> {
               ),
               Gap(AppLayout.getHeight(10)),
               TextFormField(
+                obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Please enter password";
@@ -123,6 +124,7 @@ class _AppRegsiterScreenState extends State<AppRegsiterScreen> {
               ),
               Gap(AppLayout.getHeight(10)),
               TextFormField(
+                obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Please enter confirm password";

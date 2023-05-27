@@ -17,6 +17,7 @@ List<money> getter() {
   moneyData1.category = "Attire";
   moneyData1.account = "Cash";
   moneyData1.remarks = "Hello";
+  moneyData1.date = DateTime(2023, 5, 27);
   moneyData2.type = "Income";
   moneyData2.amount = 400;
   moneyData2.category = "Cash";

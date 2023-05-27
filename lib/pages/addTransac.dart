@@ -140,36 +140,60 @@ class _AppAddScreenState extends State<AppAddScreen> {
                 Gap(AppLayout.getHeight(10)),
                 inputRemarks("Remarks", false),
                 Gap(AppLayout.getHeight(20)),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(AppLayout.getHeight(10)),
-                    border: Border.all(width: 2, color: Color(0xffc5c5c5)),
-                  ),
-                  width: AppLayout.getHeight(300),
-                  child: TextButton(
-                    onPressed: () async {
-                      DateTime? newDate = await showDatePicker(
-                          context: context,
-                          initialDate: date,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2050));
-                      if (newDate == Null) return;
-                      setState(() {
-                        date = newDate!;
-                      });
-                    },
-                    child: Text(
-                      "Date: ${Utils.getMonth(date.month)} ${date.day},${date.year}",
-                      style: Styles.headLineStyle4,
-                    ),
-                  ),
-                )
+                date_time(context),
+                Gap(AppLayout.getHeight(20)),
+                saveBtn()
               ]),
             ),
           )
         ],
       )),
+    );
+  }
+
+  GestureDetector saveBtn() {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15), color: Color(0xff368983)),
+        width: 120,
+        height: 50,
+        child: Text(
+          "Save",
+          style: Styles.headLineStyle3.copyWith(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Container date_time(BuildContext context) {
+    return Container(
+      alignment: Alignment.bottomLeft,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppLayout.getHeight(10)),
+        border: Border.all(width: 2, color: Color(0xffc5c5c5)),
+      ),
+      width: AppLayout.getHeight(300),
+      child: TextButton(
+        onPressed: () async {
+          DateTime? newDate = await showDatePicker(
+              context: context,
+              initialDate: date,
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2050));
+          if (newDate == Null) return;
+          setState(() {
+            date = newDate!;
+          });
+        },
+        child: Text(
+          "Date: ${Utils.getMonth(date.month)} ${date.day},${date.year}",
+          style: Styles.headLineStyle3.copyWith(
+              fontWeight: FontWeight.normal, color: Styles.primaryColor),
+        ),
+      ),
     );
   }
 
