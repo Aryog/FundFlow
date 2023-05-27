@@ -22,6 +22,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
     AppLoginScreen(),
     AppRegsiterScreen()
   ];
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

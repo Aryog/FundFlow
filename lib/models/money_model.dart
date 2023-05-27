@@ -9,4 +9,20 @@ class money {
   String? account;
   String? remarks;
   DateTime? date;
+  money(
+      {this.type,
+      this.amount,
+      this.category,
+      this.account,
+      this.remarks,
+      this.date});
+  factory money.fromJson(Map<String, dynamic> json) {
+    return money(
+        account: json['account'],
+        type: json['type'],
+        category: json['category'],
+        amount: json['amount'],
+        remarks: json['remarks'],
+        date: json['date']);
+  }
 }

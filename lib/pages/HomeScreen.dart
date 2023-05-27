@@ -1,16 +1,20 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:fundflow/data/listMoneyData.dart';
+import 'package:fundflow/providers/money_provider.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:fundflow/utils/app_styles.dart';
 import 'package:fundflow/utils/app_utilities.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class AppHomeScreen extends StatelessWidget {
   const AppHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final _myList = context.watch<MoneyProvider>().myList;
+    final _records = context.watch<MoneyProvider>().records;
     return Scaffold(
         backgroundColor: Styles.bgColor,
         body: SafeArea(
