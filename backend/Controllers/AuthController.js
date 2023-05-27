@@ -109,7 +109,7 @@ export const getAccessToken = async (req, res) => {
             res.status(200).json({ accessToken });
         });
     } catch (error) {
-
+        res.status(500).json({ message: error });
     }
 }
 

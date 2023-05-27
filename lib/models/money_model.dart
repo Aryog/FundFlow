@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class money {
   // maybe income expense to be checked while adding and the top tabs will be better
   String? type;
@@ -21,7 +23,7 @@ class money {
         account: json['account'],
         type: json['type'],
         category: json['category'],
-        amount: json['amount'],
+        amount: (json['amount'] as num).toDouble(),
         remarks: json['remarks'],
         date: json['date']);
   }

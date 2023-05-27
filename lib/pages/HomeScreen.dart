@@ -1,6 +1,7 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:fundflow/data/listMoneyData.dart';
+import 'package:fundflow/models/money_model.dart';
 import 'package:fundflow/providers/money_provider.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:fundflow/utils/app_styles.dart';
@@ -13,8 +14,7 @@ class AppHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _myList = context.watch<MoneyProvider>().myList;
-    final _records = context.watch<MoneyProvider>().records;
+    final _moneyProvider = context.watch<MoneyProvider>();
     return Scaffold(
         backgroundColor: Styles.bgColor,
         body: SafeArea(
@@ -45,41 +45,62 @@ class AppHomeScreen extends StatelessWidget {
                     ]),
               ),
             ),
-            SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-              return ListTile(
-                leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image.asset(
-                      "assets/images/${getter()[index].category}.png",
-                      height: 35,
-                    )),
-                title: Text(
-                  getter()[index].category!,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                subtitle: getter()[index].type == "Income"
-                    ? Text(
-                        "On ${getter()[index].account!} (${Utils.getWeekday((getter()[index].date)?.weekday)} ${Utils.getMonth(getter()[index].date?.month)} ${getter()[index].date?.day}, ${getter()[index].date?.year})",
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      )
-                    : Text(
-                        "Using ${getter()[index].account!}",
-                        style: TextStyle(fontWeight: FontWeight.w600),
+            FutureBuilder<List<money>>(
+                future: _moneyProvider.initializeData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SliverFillRemaining(
+                      child: Center(
+                        child: CircularProgressIndicator(),
                       ),
-                trailing: getter()[index].type == "Income"
-                    ? Text(
-                        '\$${getter()[index].amount}',
-                        style:
-                            Styles.headLineStyle4.copyWith(color: Colors.green),
-                      )
-                    : Text('\$${getter()[index].amount}',
-                        style:
-                            Styles.headLineStyle4.copyWith(color: Colors.red)),
-              );
-            }, childCount: getter().length))
+                    );
+                  } else if (snapshot.hasError) {
+                    return SliverFillRemaining(
+                      child: Center(
+                        child: Text("Error: ${snapshot.error}"),
+                      ),
+                    );
+                  } else {
+                    final _myList = snapshot.data;
+                    return SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                      return lowerDataDisplay(_myList, index);
+                    }, childCount: _myList?.length));
+                  }
+                }),
           ],
         )));
+  }
+
+  ListTile lowerDataDisplay(_myList, int index) {
+    return ListTile(
+      leading: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Image.asset(
+            "assets/images/${_myList[index].category}.png",
+            height: 35,
+          )),
+      title: Text(
+        _myList[index].category!,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      ),
+      subtitle: _myList[index].type == "Income"
+          ? Text(
+              "On ${_myList[index].account!} (${Utils.getWeekday((_myList[index].date)?.weekday)} ${Utils.getMonth(_myList[index].date?.month)} ${_myList[index].date?.day}, ${_myList[index].date?.year})",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            )
+          : Text(
+              "Using ${_myList[index].account!}",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+      trailing: _myList[index].type == "Income"
+          ? Text(
+              '\$${_myList[index].amount}',
+              style: Styles.headLineStyle4.copyWith(color: Colors.green),
+            )
+          : Text('\$${_myList[index].amount}',
+              style: Styles.headLineStyle4.copyWith(color: Colors.red)),
+    );
   }
 
   Widget _head() {

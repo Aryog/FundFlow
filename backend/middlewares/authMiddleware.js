@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 dotenv.config();
 // Middleware function to extract user ID from tokens
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
     // Get the access token and refresh token from the request headers or cookies
     try {
 
@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
         jwt.verify(accessToken.split(" ")[0], process.env.JWT_ACCESS_SECRET, (err, decoded) => {
             if (err) {
                 // Handle access token verification error (e.g., token expired, invalid signature)
-                res.status(401).json({ message: "You are unauthorized or your token expired" });
+                return res.status(401).json({ message: "You are unauthorized or your token expired" });
             }
 
             // Extract the user ID from the decoded access token payload

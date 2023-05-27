@@ -7,18 +7,21 @@ class MoneyProvider extends ChangeNotifier {
   List<money> _records = [];
   List<money> get records => _records;
 
-  final List<money> _myList = [];
+  List<money> _myList = [];
   List<money> get myList => _myList;
 
   MoneyProvider() {
-    _initializeData();
+    initializeData();
   }
 
-  Future<List<money>> _initializeData() async {
+  Future<List<money>> initializeData() async {
     String url = 'http://10.0.2.2:5000/record/';
     Map<String, String> headers = {
       'Content-Type': 'application/json',
+      'Authorization':
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NmI5ZjA4OGZmMTUxY2QzZTczZDg1MSIsImlhdCI6MTY4NTIwNDIyMiwiZXhwIjoxNjg1MjA1MTIyfQ.AX8m8bf0qYtkSn35DCtjE8Qjcy3Bo314EKd9k38e1lU'
     };
+    _records = [];
     try {
       final uri = Uri.parse(url);
       var response = await http.get(uri, headers: headers);
@@ -28,8 +31,12 @@ class MoneyProvider extends ChangeNotifier {
         responseData.forEach((data) {
           _records.add(money.fromJson(data));
         });
+        responseData.forEach((data) {
+          _myList.add(money.fromJson(data));
+        });
+        _myList = _records;
       } else {
-        throw Exception('Failed to fetch data');
+        throw Exception('Failed to fetch data from backend');
       }
     } catch (e) {
       print("Error ${e}");
