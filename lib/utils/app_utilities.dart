@@ -1,3 +1,5 @@
+import 'package:fundflow/models/money_model.dart';
+
 class Utils {
   static String getMonth(int? month) {
     switch (month) {
@@ -49,5 +51,33 @@ class Utils {
       default:
         return '';
     }
+  }
+
+  static String getTotalIncome(List<money> myList) {
+    double total = 0.0;
+    myList.forEach((element) {
+      if (element.type == "Income") total += element.amount!;
+    });
+    return "${total}";
+  }
+
+  static String getTotalExpense(List<money> myList) {
+    double total = 0.0;
+    myList.forEach((element) {
+      if (element.type == "Expense") total += element.amount!;
+    });
+    return "${total}";
+  }
+
+  static String getTotalBalance(List<money> myList) {
+    double total = 0.0;
+    myList.forEach((element) {
+      if (element.type == "Income") {
+        total += element.amount!;
+      } else {
+        total -= element.amount!;
+      }
+    });
+    return "${total}";
   }
 }

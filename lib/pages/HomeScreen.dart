@@ -21,7 +21,7 @@ class AppHomeScreen extends StatelessWidget {
             child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Container(height: 340, child: _head()),
+              child: Container(height: 340, child: _head(context)),
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -47,7 +47,7 @@ class AppHomeScreen extends StatelessWidget {
             ),
             FutureBuilder<List<money>>(
                 future: _moneyProvider.initializeData(),
-                builder: (context, snapshot) {
+                builder: (context, AsyncSnapshot<List<money>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const SliverFillRemaining(
                       child: Center(
@@ -61,11 +61,12 @@ class AppHomeScreen extends StatelessWidget {
                       ),
                     );
                   } else {
-                    final _myList = snapshot.data;
+                    final List<money> myList =
+                        context.watch<MoneyProvider>().myList;
                     return SliverList(
                         delegate: SliverChildBuilderDelegate((context, index) {
-                      return lowerDataDisplay(_myList, index);
-                    }, childCount: _myList?.length));
+                      return lowerDataDisplay(myList, index);
+                    }, childCount: myList?.length));
                   }
                 }),
           ],
@@ -73,6 +74,7 @@ class AppHomeScreen extends StatelessWidget {
   }
 
   ListTile lowerDataDisplay(_myList, int index) {
+    print(_myList[index].date);
     return ListTile(
       leading: ClipRRect(
           borderRadius: BorderRadius.circular(5),
@@ -90,7 +92,7 @@ class AppHomeScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w600),
             )
           : Text(
-              "Using ${_myList[index].account!}",
+              "Using ${_myList[index].account!} (${Utils.getWeekday((_myList[index].date)?.weekday)} ${Utils.getMonth(_myList[index].date?.month)} ${_myList[index].date?.day}, ${_myList[index].date?.year}",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
       trailing: _myList[index].type == "Income"
@@ -103,7 +105,8 @@ class AppHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _head() {
+  Widget _head(BuildContext context) {
+    final _moneyProvider = context.watch<MoneyProvider>();
     return Stack(
       children: [
         Column(
@@ -174,102 +177,123 @@ class AppHomeScreen extends StatelessWidget {
                 ],
                 color: Color.fromARGB(255, 47, 125, 121),
                 borderRadius: BorderRadius.circular(15)),
-            child: Padding(
-              padding: EdgeInsets.all(AppLayout.getHeight(10)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Gap(AppLayout.getHeight(4)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Total Balance",
-                        style: Styles.headLineStyle2.copyWith(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      const Icon(
-                        FluentSystemIcons.ic_fluent_more_filled,
-                        color: Colors.white,
-                      )
-                    ],
-                  ),
-                  Gap(AppLayout.getHeight(8)),
-                  Text(
-                    "\$ 254.00",
-                    style: Styles.headLineStyle1.copyWith(color: Colors.white),
-                  ),
-                  Gap(AppLayout.getHeight(15)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+            child: FutureBuilder(
+                future: _moneyProvider.initializeData(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    final List<money>? myList = snapshot.data;
+                    return Padding(
+                      padding: EdgeInsets.all(AppLayout.getHeight(10)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CircleAvatar(
-                            radius: 13,
-                            backgroundColor: Color.fromARGB(255, 85, 145, 141),
-                            child: Icon(
-                              FluentSystemIcons.ic_fluent_arrow_down_filled,
-                              color: Colors.greenAccent,
-                            ),
+                          Gap(AppLayout.getHeight(4)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Total Balance",
+                                style: Styles.headLineStyle2.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              const Icon(
+                                FluentSystemIcons.ic_fluent_more_filled,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                          Gap(AppLayout.getHeight(8)),
+                          Text(
+                            "\$ ${Utils.getTotalBalance(myList!)}",
+                            style: Styles.headLineStyle1
+                                .copyWith(color: Colors.white),
+                          ),
+                          Gap(AppLayout.getHeight(15)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const CircleAvatar(
+                                    radius: 13,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 85, 145, 141),
+                                    child: Icon(
+                                      FluentSystemIcons
+                                          .ic_fluent_arrow_down_filled,
+                                      color: Colors.greenAccent,
+                                    ),
+                                  ),
+                                  Gap(AppLayout.getHeight(5)),
+                                  Text(
+                                    "Income",
+                                    style: Styles.headLineStyle3.copyWith(
+                                        color:
+                                            Color.fromARGB(255, 216, 216, 216),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 13,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 85, 145, 141),
+                                    child: Icon(
+                                      FluentSystemIcons
+                                          .ic_fluent_arrow_up_filled,
+                                      color: Colors.red.shade200,
+                                    ),
+                                  ),
+                                  Gap(AppLayout.getHeight(5)),
+                                  Text(
+                                    "Expenses",
+                                    style: Styles.headLineStyle3.copyWith(
+                                        color:
+                                            Color.fromARGB(255, 216, 216, 216),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
                           Gap(AppLayout.getHeight(5)),
-                          Text(
-                            "Income",
-                            style: Styles.headLineStyle3.copyWith(
-                                color: Color.fromARGB(255, 216, 216, 216),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Gap(AppLayout.getHeight(10)),
+                                  Text(
+                                    '\$ ${Utils.getTotalIncome(myList)}',
+                                    style: Styles.textStyle
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                '\$ ${Utils.getTotalExpense(myList)}',
+                                style: Styles.textStyle
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ],
                           )
                         ],
                       ),
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 13,
-                            backgroundColor: Color.fromARGB(255, 85, 145, 141),
-                            child: Icon(
-                              FluentSystemIcons.ic_fluent_arrow_up_filled,
-                              color: Colors.red.shade200,
-                            ),
-                          ),
-                          Gap(AppLayout.getHeight(5)),
-                          Text(
-                            "Expenses",
-                            style: Styles.headLineStyle3.copyWith(
-                                color: Color.fromARGB(255, 216, 216, 216),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  Gap(AppLayout.getHeight(5)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Gap(AppLayout.getHeight(10)),
-                          Text(
-                            '\$ 1450.00',
-                            style:
-                                Styles.textStyle.copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        '\$ 1250.00',
-                        style: Styles.textStyle.copyWith(color: Colors.white),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
+                    );
+                  }
+                  return CircularProgressIndicator();
+                }),
           ),
         ),
       ],

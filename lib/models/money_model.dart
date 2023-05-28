@@ -25,6 +25,6 @@ class money {
         category: json['category'],
         amount: (json['amount'] as num).toDouble(),
         remarks: json['remarks'],
-        date: json['date']);
+        date: DateTime.parse(json['updatedAt']));
   }
 }

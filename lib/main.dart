@@ -9,8 +9,11 @@ import 'package:fundflow/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:fundflow/widgets/botomNavigationBar.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Required for using shared_preferences
   runApp(ChangeNotifierProvider(
     create: (_) => MoneyProvider(),
     child: const MyApp(),
