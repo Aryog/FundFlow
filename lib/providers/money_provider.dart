@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import '../models/money_model.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../interceptors/api_client.dart';
 
@@ -12,6 +10,10 @@ class MoneyProvider extends ChangeNotifier {
 
   List<money> _myList = [];
   List<money> get myList => _myList;
+
+  money _stateAdd = money(account: null, remarks: '');
+  money get stateAdd => _stateAdd;
+
   final APIClient apiClient = APIClient();
 
   MoneyProvider() {
@@ -58,6 +60,21 @@ class MoneyProvider extends ChangeNotifier {
 
   void removeFromList(money record) {
     _myList.remove(record);
+    notifyListeners();
+  }
+
+  void updateAccount(String value) {
+    _stateAdd.account = value;
+    notifyListeners();
+  }
+
+  void updateRemarks(String value) {
+    _stateAdd.remarks = value;
+    notifyListeners();
+  }
+
+  void resetStateAdd() {
+    _stateAdd = money(account: null, remarks: '');
     notifyListeners();
   }
 }

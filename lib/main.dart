@@ -1,15 +1,7 @@
-import 'package:fundflow/pages/HomeScreen.dart';
-import 'package:fundflow/pages/LoginScreen1.dart';
-import 'package:fundflow/pages/RegisterScreen.dart';
-import 'package:fundflow/pages/LearningProvider.dart';
-import 'package:fundflow/pages/StatisticsScreeen.dart';
 import 'package:fundflow/providers/money_provider.dart';
-import 'package:fundflow/providers/movie_provider.dart';
-import 'package:fundflow/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:fundflow/widgets/botomNavigationBar.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding

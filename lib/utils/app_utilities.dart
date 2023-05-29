@@ -1,4 +1,7 @@
+import 'package:dio/dio.dart';
+import 'package:fundflow/interceptors/api_client.dart';
 import 'package:fundflow/models/money_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils {
   static String getMonth(int? month) {
@@ -79,5 +82,44 @@ class Utils {
       }
     });
     return "${total}";
+  }
+
+  static Future<money> insertData(String type, String category, String account,
+      double? amount, String remarks) async {
+    final APIClient apiClient = APIClient();
+    String url = 'http://10.0.2.2:5000/record/create';
+    String? accessToken = await loadData("accessToken");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': accessToken!
+    };
+    Map<String, dynamic> body = {
+      'type': type,
+      'category': category,
+      'account': account,
+      "amount": amount,
+      "remarks": remarks
+    };
+    money result = money();
+    try {
+      final uri = Uri.parse(url);
+      var response = await apiClient.dioInstance
+          .post(uri.toString(), data: body, options: Options(headers: headers));
+      if (response.statusCode == 200) {
+        print(response.data);
+        result = money.fromJson(response.data);
+        return result;
+      } else {
+        throw Exception('Failed to fetch data from backend');
+      }
+    } catch (e) {
+      print("Error: ${e}");
+    }
+    return result;
+  }
+
+  static Future<String?> loadData(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key);
   }
 }

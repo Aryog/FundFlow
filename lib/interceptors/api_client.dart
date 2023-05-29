@@ -12,20 +12,29 @@ class APIClient {
     _dio = Dio(options);
 
     _dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        // Retrieve the access token
+        String? accessToken = await loadData("accessToken");
+
+        // Add the access token to the request headers
+        options.headers['Authorization'] = accessToken;
+
+        return handler.next(options);
+      },
       onError: (DioError error, handler) async {
         if (error.response?.statusCode == 401) {
-          // Handle 401 error and obtain a refresh token
+          // Handle 401 error and obtain a access token
           // For example, you can make another API request to get a new access token
           try {
             String? refreshToken = await loadData("refreshToken");
             Map<String, dynamic> postData = {'refreshToken': refreshToken};
             Response response =
                 await _dio.post('/refresh-token', data: postData);
-            // Extract and store the refresh token
+            // Extract and store the access token
             String newAccessToken = response.data['accessToken'];
-            saveData("accessToken", newAccessToken);
+            await saveData("accessToken", newAccessToken);
             print("accessToken saved");
-            // Do something with the refresh token (e.g., store it for future use)
+            // Do something with the access token (e.g., store it for future use)
           } catch (e) {
             // Handle the error while obtaining the refresh token
             print('Error obtaining access token: $e');

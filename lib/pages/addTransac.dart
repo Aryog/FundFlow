@@ -1,10 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fundflow/models/money_model.dart';
+import 'package:fundflow/providers/money_provider.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:fundflow/utils/app_styles.dart';
 import 'package:fundflow/utils/app_utilities.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class AppAddScreen extends StatefulWidget {
   const AppAddScreen({super.key});
@@ -22,6 +25,7 @@ class _AppAddScreenState extends State<AppAddScreen> {
   final TextEditingController amount_C = TextEditingController();
   FocusNode ex = FocusNode();
   FocusNode nu = FocusNode();
+  bool isLoading = false;
   final List<String> _itemIn = [
     'Allowance',
     'Salary',
@@ -44,6 +48,12 @@ class _AppAddScreenState extends State<AppAddScreen> {
     'Cash',
   ];
   @override
+  void dispose() {
+    explain_C.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     ex.addListener(() {
@@ -54,7 +64,55 @@ class _AppAddScreenState extends State<AppAddScreen> {
     });
   }
 
+  void saveData() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      print("clicked");
+      String type = "Income";
+      if (activeIndex == 0) {
+        type = "Income";
+      } else {
+        type = "Expense";
+      }
+
+      print(selectedItem);
+      print(selectedMethod);
+      print(amount_C.text);
+      print(explain_C.text);
+      print(date);
+      // TODO: Add the future function to add data
+      if (selectedItem == null &&
+          selectedItem!.isEmpty &&
+          selectedMethod == null &&
+          selectedMethod!.isEmpty &&
+          amount_C.text.isEmpty) return;
+      money data = await Utils.insertData(type, selectedItem!, selectedMethod!,
+          double.tryParse(amount_C.text), explain_C.text);
+      print(data);
+      setState(() {
+        selectedItem = null;
+        selectedMethod = null;
+        amount_C.clear();
+        explain_C.clear;
+        context.read<MoneyProvider>().resetStateAdd();
+        isLoading = false;
+      });
+    } catch (e) {
+      print("error occured is ${e}");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
+    final stateAdd = context.watch<MoneyProvider>().stateAdd;
+    explain_C.text = stateAdd.remarks!;
+    explain_C.selection =
+        TextSelection.collapsed(offset: explain_C.text.length);
+    selectedMethod = stateAdd.account;
     return Scaffold(
       backgroundColor: Styles.bgColor,
       body: SafeArea(
@@ -134,11 +192,11 @@ class _AppAddScreenState extends State<AppAddScreen> {
                     ? category(_itemIn, false)
                     : category(_itemEx, false),
                 Gap(AppLayout.getHeight(10)),
-                inputRemarks("Amount", true),
+                inputRemarks("Amount", true, context),
                 Gap(AppLayout.getHeight(10)),
                 category(_method, true),
                 Gap(AppLayout.getHeight(10)),
-                inputRemarks("Remarks", false),
+                inputRemarks("Remarks", false, context),
                 Gap(AppLayout.getHeight(20)),
                 date_time(context),
                 Gap(AppLayout.getHeight(20)),
@@ -153,17 +211,24 @@ class _AppAddScreenState extends State<AppAddScreen> {
 
   GestureDetector saveBtn() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => saveData(),
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15), color: Color(0xff368983)),
         width: 120,
         height: 50,
-        child: Text(
-          "Save",
-          style: Styles.headLineStyle3.copyWith(color: Colors.white),
-        ),
+        child: isLoading
+            ? Transform.scale(
+                scale: 0.7,
+                child: const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : Text(
+                "Save",
+                style: Styles.headLineStyle3.copyWith(color: Colors.white),
+              ),
       ),
     );
   }
@@ -197,10 +262,12 @@ class _AppAddScreenState extends State<AppAddScreen> {
     );
   }
 
-  Padding inputRemarks(String str, bool isNumber) {
+  Padding inputRemarks(String str, bool isNumber, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
+        onChanged: (value) =>
+            isNumber ? "" : context.read<MoneyProvider>().updateRemarks(value),
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
         focusNode: isNumber ? nu : ex,
         controller: isNumber ? amount_C : explain_C,
@@ -280,6 +347,7 @@ class _AppAddScreenState extends State<AppAddScreen> {
             setState(() {
               if (isMethod) {
                 selectedMethod = value!;
+                context.read<MoneyProvider>().updateAccount(value);
               } else {
                 selectedItem = value!;
               }

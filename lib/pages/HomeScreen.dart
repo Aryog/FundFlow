@@ -1,6 +1,5 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:fundflow/data/listMoneyData.dart';
 import 'package:fundflow/models/money_model.dart';
 import 'package:fundflow/providers/money_provider.dart';
 import 'package:fundflow/utils/app_layout.dart';
