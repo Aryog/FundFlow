@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-
 import '../models/movie_model.dart';
 
 final List<Movie> initialData = List.generate(

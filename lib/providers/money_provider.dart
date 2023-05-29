@@ -1,8 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../models/money_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../interceptors/api_client.dart';
 
 class MoneyProvider extends ChangeNotifier {
   List<money> _records = [];
@@ -10,6 +12,7 @@ class MoneyProvider extends ChangeNotifier {
 
   List<money> _myList = [];
   List<money> get myList => _myList;
+  final APIClient apiClient = APIClient();
 
   MoneyProvider() {
     initializeData();
@@ -28,10 +31,11 @@ class MoneyProvider extends ChangeNotifier {
     };
     try {
       final uri = Uri.parse(url);
-      var response = await http.get(uri, headers: headers);
+      var response = await apiClient.dioInstance
+          .get(uri.toString(), options: Options(headers: headers));
+
       if (response.statusCode == 200) {
-        print(response);
-        List<dynamic> responseData = jsonDecode(response.body);
+        List<dynamic> responseData = response.data;
         _records = [];
         _myList = [];
         responseData.forEach((data) {

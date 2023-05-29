@@ -29,7 +29,6 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
   }
 
   void _submitForm() async {
-    print("clicked");
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
       // Perform the save operation using backend
@@ -50,7 +49,7 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
           String refreshToken = responseData['refreshToken'];
           saveData("accessToken", accessToken);
           saveData("refreshToken", refreshToken);
-          print('accesstoken is ${accessToken}');
+          print('Logged in successfully');
         } else {
           // Login failed
           print('Login failed with status code: ${response.statusCode}');
@@ -58,8 +57,6 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
       } catch (e) {
         print("Error ${e}");
       }
-      print('UserName: $_username');
-      print("Password: $_password");
     }
   }
 

@@ -74,7 +74,6 @@ class AppHomeScreen extends StatelessWidget {
   }
 
   ListTile lowerDataDisplay(_myList, int index) {
-    print(_myList[index].date);
     return ListTile(
       leading: ClipRRect(
           borderRadius: BorderRadius.circular(5),
