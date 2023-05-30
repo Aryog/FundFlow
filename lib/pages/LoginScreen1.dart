@@ -18,7 +18,7 @@ class AppLoginScreen extends StatefulWidget {
 
 class _AppLoginScreenState extends State<AppLoginScreen> {
   bool isChecked = false;
-  bool isVisible = false;
+  bool isNotVisible = true;
   final _formkey = GlobalKey<FormState>();
   String _username = '';
   String _password = '';
@@ -109,7 +109,7 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
                       return null;
                     }
                   },
-                  obscureText: isVisible,
+                  obscureText: isNotVisible,
                   onSaved: ((newValue) => _password = newValue!),
                   decoration: InputDecoration(
                       prefixIcon: Icon(
@@ -117,12 +117,12 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
                         color: Styles.primaryColor,
                       ),
                       suffixIcon: GestureDetector(
-                        child: Icon(isVisible
+                        child: Icon(isNotVisible
                             ? FluentSystemIcons.ic_fluent_eye_hide_filled
                             : FluentSystemIcons.ic_fluent_eye_show_filled),
                         onTap: () {
                           setState(() {
-                            isVisible = !isVisible;
+                            isNotVisible = !isNotVisible;
                           });
                         },
                       ),

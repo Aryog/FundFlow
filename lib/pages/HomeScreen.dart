@@ -1,6 +1,7 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:fundflow/models/money_model.dart';
+import 'package:fundflow/pages/addTransac.dart';
 import 'package:fundflow/providers/money_provider.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:fundflow/utils/app_styles.dart';
@@ -64,7 +65,7 @@ class AppHomeScreen extends StatelessWidget {
                         context.watch<MoneyProvider>().myList;
                     return SliverList(
                         delegate: SliverChildBuilderDelegate((context, index) {
-                      return lowerDataDisplay(myList, index);
+                      return lowerDataDisplay(myList, index, context);
                     }, childCount: myList?.length));
                   }
                 }),
@@ -72,8 +73,23 @@ class AppHomeScreen extends StatelessWidget {
         )));
   }
 
-  ListTile lowerDataDisplay(_myList, int index) {
+  ListTile lowerDataDisplay(_myList, int index, BuildContext context) {
     return ListTile(
+      onTap: () {
+        money item = _myList[index];
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AppAddScreen(
+                    id: item.id,
+                    type: item.type,
+                    amount: item.amount,
+                    category: item.category,
+                    account: item.account,
+                    remarks: item.remarks,
+                    date: item.date,
+                    isFromHome: false)));
+      },
       leading: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: Image.asset(
@@ -90,7 +106,7 @@ class AppHomeScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w600),
             )
           : Text(
-              "Using ${_myList[index].account!} (${Utils.getWeekday((_myList[index].date)?.weekday)} ${Utils.getMonth(_myList[index].date?.month)} ${_myList[index].date?.day}, ${_myList[index].date?.year}",
+              "Using ${_myList[index].account!} (${Utils.getWeekday((_myList[index].date)?.weekday)} ${Utils.getMonth(_myList[index].date?.month)} ${_myList[index].date?.day}, ${_myList[index].date?.year})",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
       trailing: _myList[index].type == "Income"

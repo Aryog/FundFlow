@@ -10,8 +10,8 @@ export async function getAllRecordOfUser(req, res) {
 }
 export async function createUserRecord(req, res) {
     try {
-        const { type, amount, category, account, remarks } = req.body;
-        const newRecord = await RecordModel({ type, amount, category, account, remarks, user: req.userId })
+        const { type, amount, category, account, remarks, date } = req.body;
+        const newRecord = await RecordModel({ type, amount, category, account, remarks, user: req.userId, date })
         const savedRecord = await newRecord.save();
         res.status(200).json(savedRecord)
     } catch (error) {

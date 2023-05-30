@@ -32,8 +32,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
       body: Screen[activeIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => AppAddScreen()));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AppAddScreen(
+                    isFromHome: true,
+                  )));
         },
         child: Icon(Icons.add),
         backgroundColor: Color(0xff368983),

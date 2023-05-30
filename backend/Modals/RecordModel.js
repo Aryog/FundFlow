@@ -24,6 +24,10 @@ const RecordSchema = mongoose.Schema({
         type: String,
         require: true,
         default: ""
+    },
+    date: {
+        type: Date,
+        required: true
     }
 }, { timestamps: true })
 

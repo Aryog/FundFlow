@@ -10,7 +10,24 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 class AppAddScreen extends StatefulWidget {
-  const AppAddScreen({super.key});
+  bool isFromHome;
+  String? id;
+  String? type;
+  double? amount;
+  String? category;
+  String? account;
+  String? remarks;
+  DateTime? date;
+  AppAddScreen(
+      {super.key,
+      this.id,
+      this.type,
+      this.amount,
+      this.category,
+      this.account,
+      this.remarks,
+      this.date,
+      required this.isFromHome});
 
   @override
   State<AppAddScreen> createState() => _AppAddScreenState();
@@ -55,6 +72,29 @@ class _AppAddScreenState extends State<AppAddScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // Perform state updates or trigger rebuilds here
+      setState(() {
+        // Update state variables
+        if (widget.isFromHome == false) {
+          // Save the initial data based on the value of isFromHome
+          if (widget.type == 'Income') {
+            // Initial data for income
+            activeIndex = 0;
+          } else if (widget.type == 'Expense') {
+            // Initial data for expense
+            activeIndex = 1;
+          }
+          selectedItem = widget.category;
+          selectedMethod = widget.account;
+          amount_C.text = widget.amount.toString();
+          explain_C.text = widget.remarks!;
+          context.read<MoneyProvider>().updateAccount(selectedMethod!);
+          context.read<MoneyProvider>().updateRemarks(explain_C.text);
+          date = widget.date!;
+        }
+      });
+    });
     super.initState();
     ex.addListener(() {
       setState(() {});
@@ -89,7 +129,7 @@ class _AppAddScreenState extends State<AppAddScreen> {
           selectedMethod!.isEmpty &&
           amount_C.text.isEmpty) return;
       money data = await Utils.insertData(type, selectedItem!, selectedMethod!,
-          double.tryParse(amount_C.text), explain_C.text);
+          double.tryParse(amount_C.text), explain_C.text, date);
       print(data);
       setState(() {
         selectedItem = null;

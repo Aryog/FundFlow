@@ -85,7 +85,7 @@ class Utils {
   }
 
   static Future<money> insertData(String type, String category, String account,
-      double? amount, String remarks) async {
+      double? amount, String remarks, DateTime date) async {
     final APIClient apiClient = APIClient();
     String url = 'http://10.0.2.2:5000/record/create';
     String? accessToken = await loadData("accessToken");
@@ -98,7 +98,8 @@ class Utils {
       'category': category,
       'account': account,
       "amount": amount,
-      "remarks": remarks
+      "remarks": remarks,
+      "date": date.toIso8601String(),
     };
     money result = money();
     try {
