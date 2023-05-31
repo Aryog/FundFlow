@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../models/money_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/app_utilities.dart';
 import '../interceptors/api_client.dart';
 
 class MoneyProvider extends ChangeNotifier {
@@ -19,14 +20,10 @@ class MoneyProvider extends ChangeNotifier {
   MoneyProvider() {
     initializeData();
   }
-  Future<String?> loadData(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
-  }
 
   Future<List<money>> initializeData() async {
     String url = 'http://10.0.2.2:5000/record/';
-    String? accessToken = await loadData("accessToken");
+    String? accessToken = await Utils.loadData("accessToken");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': accessToken!

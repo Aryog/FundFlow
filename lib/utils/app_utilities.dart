@@ -119,8 +119,49 @@ class Utils {
     return result;
   }
 
+  static Future<bool> updateData(String? id, String type, String category,
+      String account, double? amount, String remarks, DateTime date) async {
+    final APIClient apiClient = APIClient();
+    String url = 'http://10.0.2.2:5000/record/${id}';
+    String? accessToken = await loadData("accessToken");
+    String? userId = await loadData("userId");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': accessToken!
+    };
+    Map<String, dynamic> body = {
+      'user': userId,
+      'type': type,
+      'category': category,
+      'account': account,
+      "amount": amount,
+      "remarks": remarks,
+      "date": date.toIso8601String(),
+    };
+    money result = money();
+    try {
+      final uri = Uri.parse(url);
+      var response = await apiClient.dioInstance
+          .put(uri.toString(), data: body, options: Options(headers: headers));
+      if (response.statusCode == 200) {
+        print(response.data);
+        return true;
+      } else {
+        throw Exception('Failed to fetch data from backend');
+      }
+    } catch (e) {
+      print("Error: ${e}");
+    }
+    return false;
+  }
+
   static Future<String?> loadData(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
+  }
+
+  static Future<void> saveData(String key, String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, value);
   }
 }

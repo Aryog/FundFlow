@@ -7,7 +7,7 @@ import 'package:fundflow/utils/app_styles.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/app_utilities.dart';
 
 class AppLoginScreen extends StatefulWidget {
   const AppLoginScreen({Key? key}) : super(key: key);
@@ -22,11 +22,6 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
   final _formkey = GlobalKey<FormState>();
   String _username = '';
   String _password = '';
-
-  Future<void> saveData(String key, String value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(key, value);
-  }
 
   void _submitForm() async {
     if (_formkey.currentState!.validate()) {
@@ -47,8 +42,10 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
           var responseData = jsonDecode(response.body);
           String accessToken = responseData['accessToken'];
           String refreshToken = responseData['refreshToken'];
-          saveData("accessToken", accessToken);
-          saveData("refreshToken", refreshToken);
+          String userId = responseData['user']['_id'];
+          Utils.saveData("accessToken", accessToken);
+          Utils.saveData("refreshToken", refreshToken);
+          Utils.saveData("userId", userId);
           print('Logged in successfully');
         } else {
           // Login failed

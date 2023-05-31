@@ -66,7 +66,7 @@ class AppHomeScreen extends StatelessWidget {
                     return SliverList(
                         delegate: SliverChildBuilderDelegate((context, index) {
                       return lowerDataDisplay(myList, index, context);
-                    }, childCount: myList?.length));
+                    }, childCount: myList.length));
                   }
                 }),
           ],
@@ -109,13 +109,11 @@ class AppHomeScreen extends StatelessWidget {
               "Using ${_myList[index].account!} (${Utils.getWeekday((_myList[index].date)?.weekday)} ${Utils.getMonth(_myList[index].date?.month)} ${_myList[index].date?.day}, ${_myList[index].date?.year})",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
-      trailing: _myList[index].type == "Income"
-          ? Text(
-              '\$${_myList[index].amount}',
-              style: Styles.headLineStyle4.copyWith(color: Colors.green),
-            )
-          : Text('\$${_myList[index].amount}',
-              style: Styles.headLineStyle4.copyWith(color: Colors.red)),
+      trailing: Text(
+        '\$${_myList[index].amount}',
+        style: Styles.headLineStyle4.copyWith(
+            color: _myList[index].type == "Income" ? Colors.green : Colors.red),
+      ),
     );
   }
 

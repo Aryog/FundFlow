@@ -128,9 +128,27 @@ class _AppAddScreenState extends State<AppAddScreen> {
           selectedMethod == null &&
           selectedMethod!.isEmpty &&
           amount_C.text.isEmpty) return;
-      money data = await Utils.insertData(type, selectedItem!, selectedMethod!,
-          double.tryParse(amount_C.text), explain_C.text, date);
-      print(data);
+
+      if (widget.isFromHome) {
+        money data = await Utils.insertData(
+            type,
+            selectedItem!,
+            selectedMethod!,
+            double.tryParse(amount_C.text),
+            explain_C.text,
+            date);
+        print(data);
+      } else {
+        bool isUpdated = await Utils.updateData(
+            widget.id,
+            type,
+            selectedItem!,
+            selectedMethod!,
+            double.tryParse(amount_C.text),
+            explain_C.text,
+            date);
+        print(isUpdated);
+      }
       setState(() {
         selectedItem = null;
         selectedMethod = null;
@@ -266,7 +284,7 @@ class _AppAddScreenState extends State<AppAddScreen> {
                 ),
               )
             : Text(
-                "Save",
+                widget.isFromHome ? "Save" : "Update",
                 style: Styles.headLineStyle3.copyWith(color: Colors.white),
               ),
       ),

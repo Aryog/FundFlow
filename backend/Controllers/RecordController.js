@@ -22,5 +22,17 @@ export async function deleteUserRecord(req, res) {
 
 }
 export async function updateUserRecord(req, res) {
-
+    const recordId = req.params.id;
+    const { user } = req.body;
+    try {
+        const record = await RecordModel.findById(recordId);
+        if (record.user == user) {
+            await record.updateOne({ $set: req.body })
+            res.status(200).json({ message: "Record Updated" })
+        } else {
+            res.status(403).json("Action forbidden!");
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
