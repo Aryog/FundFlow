@@ -72,7 +72,7 @@ class _AppAddScreenState extends State<AppAddScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       // Perform state updates or trigger rebuilds here
       setState(() {
         // Update state variables

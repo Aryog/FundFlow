@@ -4,7 +4,6 @@ import 'package:fundflow/utils/app_styles.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
 
 class AppRegsiterScreen extends StatefulWidget {
   const AppRegsiterScreen({super.key});

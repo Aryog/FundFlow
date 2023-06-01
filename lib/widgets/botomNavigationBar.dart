@@ -16,18 +16,19 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int activeIndex = 0;
-  List Screen = [
-    AppHomeScreen(),
-    AppStatisticsScreen(),
-    AppLoginScreen(),
-    AppRegsiterScreen()
-  ];
+
   void initState() {
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    List Screen = [
+      AppHomeScreen(),
+      AppStatisticsScreen(),
+      AppLoginScreen(),
+      AppRegsiterScreen()
+    ];
     return Scaffold(
       body: Screen[activeIndex],
       floatingActionButton: FloatingActionButton(

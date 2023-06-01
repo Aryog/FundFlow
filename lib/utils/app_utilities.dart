@@ -138,11 +138,38 @@ class Utils {
       "remarks": remarks,
       "date": date.toIso8601String(),
     };
-    money result = money();
     try {
       final uri = Uri.parse(url);
       var response = await apiClient.dioInstance
           .put(uri.toString(), data: body, options: Options(headers: headers));
+      if (response.statusCode == 200) {
+        print(response.data);
+        return true;
+      } else {
+        throw Exception('Failed to fetch data from backend');
+      }
+    } catch (e) {
+      print("Error: ${e}");
+    }
+    return false;
+  }
+
+  static Future<bool> deleteData(String id) async {
+    final APIClient apiClient = APIClient();
+    String url = 'http://10.0.2.2:5000/record/${id}';
+    String? accessToken = await loadData("accessToken");
+    String? userId = await loadData("userId");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': accessToken!
+    };
+    Map<String, dynamic> body = {
+      "user": userId,
+    };
+    try {
+      final uri = Uri.parse(url);
+      var response = await apiClient.dioInstance.delete(uri.toString(),
+          data: body, options: Options(headers: headers));
       if (response.statusCode == 200) {
         print(response.data);
         return true;

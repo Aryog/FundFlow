@@ -60,6 +60,15 @@ class MoneyProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> removeFromListUsingId(String id) async {
+    bool isDeleted = await Utils.deleteData(id);
+    if (isDeleted) {
+      _myList.removeWhere((record) => record.id == id);
+      notifyListeners();
+    }
+    return isDeleted;
+  }
+
   void updateAccount(String value) {
     _stateAdd.account = value;
     notifyListeners();

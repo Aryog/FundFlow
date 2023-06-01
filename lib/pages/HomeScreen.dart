@@ -74,6 +74,12 @@ class AppHomeScreen extends StatelessWidget {
   }
 
   ListTile lowerDataDisplay(_myList, int index, BuildContext context) {
+    Future<void> delete(String id) async {
+      bool isdeleted =
+          await context.read<MoneyProvider>().removeFromListUsingId(id);
+      print(isdeleted);
+    }
+
     return ListTile(
       onTap: () {
         money item = _myList[index];
@@ -109,10 +115,36 @@ class AppHomeScreen extends StatelessWidget {
               "Using ${_myList[index].account!} (${Utils.getWeekday((_myList[index].date)?.weekday)} ${Utils.getMonth(_myList[index].date?.month)} ${_myList[index].date?.day}, ${_myList[index].date?.year})",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
-      trailing: Text(
-        '\$${_myList[index].amount}',
-        style: Styles.headLineStyle4.copyWith(
-            color: _myList[index].type == "Income" ? Colors.green : Colors.red),
+      trailing: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Text(
+            '\$${_myList[index].amount}',
+            style: Styles.headLineStyle4.copyWith(
+                color: _myList[index].type == "Income"
+                    ? Colors.green
+                    : Colors.red),
+          ),
+          PopupMenuButton(
+            icon: Icon(Icons.more_horiz),
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  child: Text("Delete"),
+                  value: 1,
+                )
+              ];
+            },
+            onSelected: (value) {
+              switch (value) {
+                case 1:
+                  print("delete choosed ${_myList[index].id}");
+                  delete(_myList[index].id);
+                  break;
+              }
+            },
+          ),
+        ],
       ),
     );
   }
