@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fundflow/pages/HomeScreen.dart';
-import 'package:fundflow/pages/LoginScreen1.dart';
 import 'package:fundflow/pages/RegisterScreen.dart';
 import 'package:fundflow/pages/StatisticsScreeen.dart';
 import 'package:fundflow/pages/addTransac.dart';
+import 'package:fundflow/pages/profileScreen.dart';
 import 'package:fundflow/utils/app_layout.dart';
 import 'package:gap/gap.dart';
 
@@ -26,8 +26,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
     List Screen = [
       AppHomeScreen(),
       AppStatisticsScreen(),
-      AppLoginScreen(),
-      AppRegsiterScreen()
+      AppRegsiterScreen(),
+      AppProfileScreen(),
     ];
     return Scaffold(
       body: Screen[activeIndex],

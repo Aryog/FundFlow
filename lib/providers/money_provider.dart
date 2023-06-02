@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../models/money_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/app_utilities.dart';
 import '../interceptors/api_client.dart';
 

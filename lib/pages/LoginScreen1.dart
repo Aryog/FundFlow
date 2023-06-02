@@ -23,7 +23,7 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
   String _username = '';
   String _password = '';
 
-  void _submitForm() async {
+  void loginBtn(BuildContext context) async {
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
       // Perform the save operation using backend
@@ -47,6 +47,7 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
           Utils.saveData("refreshToken", refreshToken);
           Utils.saveData("userId", userId);
           print('Logged in successfully');
+          Navigator.pushReplacementNamed(context, "/");
         } else {
           // Login failed
           print('Login failed with status code: ${response.statusCode}');
@@ -171,7 +172,7 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
                 Container(
                   width: double.infinity,
                   child: ElevatedButton(
-                      onPressed: () => _submitForm(),
+                      onPressed: () => loginBtn(context),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Styles.primaryColor,
                           shape: RoundedRectangleBorder(
@@ -190,7 +191,9 @@ class _AppLoginScreenState extends State<AppLoginScreen> {
                   children: [
                     Text("Don't have an account?"),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushReplacementNamed(context, '/register');
+                      },
                       child: Text(
                         " Register Here!",
                         style: Styles.headLineStyle3
